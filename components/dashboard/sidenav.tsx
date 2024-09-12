@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   CalendarDays,
   UsersRound,
+  PencilLine,
 } from "lucide-react";
 import { ThemeToggler } from "../themes/theme-toggler";
 import { signout } from "@/lib/actions/auth-action";
@@ -67,7 +68,10 @@ export default async function Sidenav() {
                 <ThemeToggler>Theme</ThemeToggler>
               </div>
               <form action={signout}>
-                <button type="submit" className="text-md flex items-center gap-2 hover:bg-muted rounded-md p-2 w-full">
+                <button
+                  type="submit"
+                  className="text-md flex items-center gap-2 hover:bg-muted rounded-md p-2 w-full"
+                >
                   <LogOut />
                   Logout
                 </button>
@@ -95,5 +99,10 @@ export const dashboardLinks = [
     name: "Users",
     href: "/dashboard/users",
     icon: <UsersRound />,
+  },
+  {
+    name: "Feedbacks",
+    href: "/dashboard/feedbacks",
+    icon: <PencilLine />,
   },
 ];
