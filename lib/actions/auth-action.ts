@@ -25,3 +25,10 @@ export async function signinWithGoogle() {
   revalidatePath("/", "layout");
   redirect("/dashboard");
 }
+
+export async function signout() {
+  const supabase = createClient();
+  await supabase.auth.signOut();
+  revalidatePath("/", "layout");
+  redirect("/");
+}

@@ -28,8 +28,8 @@ export default async function Header() {
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col w-[250px]">
-          <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+        <SheetContent side="left" className="flex flex-col item-start w-[250px]">
+          <nav className="grid items-start text-sm font-medium">
             <Link
               href="/profile"
               className="flex items-center gap-2 hover:bg-muted rounded-md p-2"
