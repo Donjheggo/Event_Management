@@ -2,14 +2,11 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Activity,
   ArrowUpRight,
-  CreditCard,
-  DollarSign,
   Users,
   CalendarDays,
   CalendarCheck,
-  PencilLine
+  PencilLine,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -237,7 +234,9 @@ export default function Dashboard() {
                 <p className="text-sm font-medium leading-none">
                   Olivia Martin
                 </p>
-                <p className="text-sm text-muted-foreground">oliviamartin@ssct.edu.ph</p>
+                <p className="text-sm text-muted-foreground">
+                  oliviamartin@ssct.edu.ph
+                </p>
               </div>
               <div className="ml-auto font-medium">BSCE - 4A</div>
             </div>
@@ -263,7 +262,9 @@ export default function Dashboard() {
                 <p className="text-sm font-medium leading-none">
                   Isabella Nguyen
                 </p>
-                <p className="text-sm text-muted-foreground">isabellanguyan@ssct.edu.ph</p>
+                <p className="text-sm text-muted-foreground">
+                  isabellanguyan@ssct.edu.ph
+                </p>
               </div>
               <div className="ml-auto font-medium">BSCE - 4A</div>
             </div>
@@ -273,8 +274,12 @@ export default function Dashboard() {
                 <AvatarFallback>WK</AvatarFallback>
               </Avatar>
               <div className="grid gap-1">
-                <p className="text-sm font-medium leading-none">Christian Jhegg Fermilan</p>
-                <p className="text-sm text-muted-foreground">cfermilan@ssct.edu.ph</p>
+                <p className="text-sm font-medium leading-none">
+                  Christian Jhegg Fermilan
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  cfermilan@ssct.edu.ph
+                </p>
               </div>
               <div className="ml-auto font-medium">BSCE - 4A</div>
             </div>
@@ -285,7 +290,9 @@ export default function Dashboard() {
               </Avatar>
               <div className="grid gap-1">
                 <p className="text-sm font-medium leading-none">Jackson Lee</p>
-                <p className="text-sm text-muted-foreground">jacksonlee@ssct.edu.ph</p>
+                <p className="text-sm text-muted-foreground">
+                  jacksonlee@ssct.edu.ph
+                </p>
               </div>
               <div className="ml-auto font-medium">BSCE - 4A</div>
             </div>
