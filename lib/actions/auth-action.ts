@@ -4,13 +4,18 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
+const url_callback =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000/auth/callback"
+    : "https://event-management-khaki-omega.vercel.app/auth/callback";
+
 export async function signinWithGoogle() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: "http://localhost:3000/auth/callback",
+      redirectTo: url_callback,
     },
   });
 
