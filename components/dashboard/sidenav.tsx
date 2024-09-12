@@ -6,6 +6,7 @@ import {
   CalendarDays,
   UsersRound,
   PencilLine,
+  User,
 } from "lucide-react";
 import { ThemeToggler } from "../themes/theme-toggler";
 import { signout } from "@/lib/actions/auth-action";
@@ -64,6 +65,13 @@ export default async function Sidenav() {
               <p className="text-sm font-medium text-muted-foreground pb-2 max-w-[248px] truncate">
                 Settings
               </p>
+              <Link
+                href="/profile"
+                className="flex items-center gap-2 hover:bg-muted rounded-md p-2"
+              >
+                <User />
+                <h1 className="text-md">Profile</h1>
+              </Link>
               <div className="flex items-center gap-2">
                 <ThemeToggler>Theme</ThemeToggler>
               </div>
