@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,18 +9,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User, AlignLeft } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { createClient } from "@/lib/supabase/server";
 import { ThemeToggler } from "../themes/theme-toggler";
 import { Button } from "../ui/button";
-import { dashboardLinks } from "./sidenav";
+import { adminLinks, userLinks } from "./sidenav";
 import { signout } from "@/lib/actions/auth-action";
 import placeholder from "@/app/user.png";
 import Link from "next/link";
 import Image from "next/image";
+import { useUser } from "@/context/user-context";
 
-export default async function Header() {
-  const supabase = createClient();
-  const { data } = await supabase.auth.getUser();
+export default function Header() {
+  const { loading, user } = useUser();
+  if (loading) return;
+
   return (
     <header className="flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6">
       <Sheet>
@@ -28,26 +31,30 @@ export default async function Header() {
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col item-start w-[250px]">
+        <SheetContent
+          side="left"
+          className="flex flex-col item-start w-[250px]"
+        >
           <nav className="grid items-start text-sm font-medium">
             <Link
               href="/profile"
               className="flex items-center gap-2 hover:bg-muted rounded-md p-2"
             >
               <Image
-                src={data?.user?.user_metadata.picture || placeholder}
+                src={user?.image || placeholder}
                 alt="user-avatar"
                 height={35}
                 width={35}
                 className="rounded-full"
               />
-              <h1 className="text-md">{data?.user?.user_metadata.name}</h1>
+              <h1 className="text-md">{user?.name}</h1>
             </Link>
+
             <div className="mt-2">
               <p className="text-sm font-medium text-muted-foreground pb-2 max-w-[248px] truncate">
                 Pages
               </p>
-              {dashboardLinks.map((item, index) => (
+              {userLinks.map((item, index) => (
                 <Link
                   href={item.href}
                   key={index}
@@ -59,10 +66,35 @@ export default async function Header() {
               ))}
             </div>
 
+            {user?.role === "ADMIN" && (
+              <div className="mt-2">
+                <p className="text-sm font-medium text-muted-foreground pb-2 max-w-[248px] truncate">
+                  Admin
+                </p>
+                {adminLinks.map((item, index) => (
+                  <Link
+                    href={item.href}
+                    key={index}
+                    className="flex items-center gap-2 hover:bg-muted rounded-md p-2"
+                  >
+                    {item.icon}
+                    <h1 className="text-md">{item.name}</h1>
+                  </Link>
+                ))}
+              </div>
+            )}
+
             <div className="mt-2">
               <p className="text-sm font-medium text-muted-foreground pb-2 max-w-[248px] truncate">
                 Settings
               </p>
+              <Link
+                href="/profile"
+                className="flex items-center gap-2 hover:bg-muted rounded-md p-2"
+              >
+                <User />
+                <h1 className="text-md">Profile</h1>
+              </Link>
               <div className="flex items-center gap-2">
                 <ThemeToggler>Theme</ThemeToggler>
               </div>
@@ -85,7 +117,7 @@ export default async function Header() {
           <DropdownMenuTrigger asChild className="hover:cursor-pointer">
             <Button variant="outline" size="icon" className="rounded-full">
               <Image
-                src={data?.user?.user_metadata.picture || placeholder}
+                src={user?.image || placeholder}
                 alt="user-avatar"
                 height={40}
                 width={40}

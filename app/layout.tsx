@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/themes/theme-provider";
 import { Bounce, ToastContainer } from "react-toastify";
+import { createClient } from "@/lib/supabase/server";
+import UserProvider from "@/context/user-context";
+import UserLayout from "@/components/user-layout/layout";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
@@ -21,11 +24,14 @@ export const metadata: Metadata = {
   description: "SNSU Event Management",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -37,7 +43,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <UserProvider>
+            {data?.user ? <UserLayout>{children}</UserLayout> : children}
+          </UserProvider>
+
           <ToastContainer
             position="bottom-left"
             autoClose={5000}

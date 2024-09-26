@@ -33,6 +33,8 @@ export async function updateSession(request: NextRequest) {
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug
   // issues with users being randomly logged out.
 
+  
+  // Routes Protection by User Authtentication
   const isLoginPage = request.nextUrl.pathname.startsWith("/auth"); // login and register page
   const {
     data: { user },
@@ -43,6 +45,31 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/sign-in";
     return NextResponse.redirect(url);
+  }
+
+  // Routes Authorization Filter by User Role
+  if (user) {
+    const { data: userData, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+
+    if (error) {
+      console.error("Error fetching user role:", error);
+    }
+
+    const isAdmin = userData.role === "ADMIN";
+    const adminRoutes = ["/dashboard"];
+
+    if (
+      !isAdmin &&
+      adminRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
+    ) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/events";
+      return NextResponse.redirect(url);
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

@@ -1,5 +1,6 @@
+"use client";
+
 import { Package2 } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
 import {
   LogOut,
   LayoutDashboard,
@@ -13,10 +14,11 @@ import { signout } from "@/lib/actions/auth-action";
 import placeholder from "@/app/user.png";
 import Link from "next/link";
 import Image from "next/image";
+import { useUser } from "@/context/user-context";
 
-export default async function Sidenav() {
-  const supabase = createClient();
-  const { data } = await supabase.auth.getUser();
+export default function Sidenav() {
+  const { loading, user } = useUser();
+  if (loading) return;
 
   return (
     <aside className="hidden border-r md:block">
@@ -37,19 +39,19 @@ export default async function Sidenav() {
               className="flex items-center gap-2 hover:bg-muted rounded-md p-2"
             >
               <Image
-                src={data?.user?.user_metadata.picture || placeholder}
+                src={user?.image || placeholder}
                 alt="user-avatar"
                 height={35}
                 width={35}
                 className="rounded-full"
               />
-              <h1 className="text-md">{data?.user?.user_metadata.name}</h1>
+              <h1 className="text-md">{user?.name}</h1>
             </Link>
             <div className="mt-2">
               <p className="text-sm font-medium text-muted-foreground pb-2 max-w-[248px] truncate">
-                Admin
+                Pages
               </p>
-              {dashboardLinks.map((item, index) => (
+              {userLinks.map((item, index) => (
                 <Link
                   href={item.href}
                   key={index}
@@ -60,6 +62,24 @@ export default async function Sidenav() {
                 </Link>
               ))}
             </div>
+
+            {user?.role === "ADMIN" && (
+              <div className="mt-2">
+                <p className="text-sm font-medium text-muted-foreground pb-2 max-w-[248px] truncate">
+                  Admin
+                </p>
+                {adminLinks.map((item, index) => (
+                  <Link
+                    href={item.href}
+                    key={index}
+                    className="flex items-center gap-2 hover:bg-muted rounded-md p-2"
+                  >
+                    {item.icon}
+                    <h1 className="text-md">{item.name}</h1>
+                  </Link>
+                ))}
+              </div>
+            )}
 
             <div className="mt-2">
               <p className="text-sm font-medium text-muted-foreground pb-2 max-w-[248px] truncate">
@@ -92,7 +112,7 @@ export default async function Sidenav() {
   );
 }
 
-export const dashboardLinks = [
+export const adminLinks = [
   {
     name: "Dashboard",
     href: "/dashboard",
@@ -111,6 +131,19 @@ export const dashboardLinks = [
   {
     name: "Feedbacks",
     href: "/dashboard/feedbacks",
+    icon: <PencilLine />,
+  },
+];
+
+export const userLinks = [
+  {
+    name: "Events",
+    href: "/events",
+    icon: <CalendarDays />,
+  },
+  {
+    name: "Feedbacks",
+    href: "/feedbacks",
     icon: <PencilLine />,
   },
 ];

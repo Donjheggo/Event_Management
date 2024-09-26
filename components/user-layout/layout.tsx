@@ -1,7 +1,7 @@
-import SideNav from "@/components/dashboard/sidenav";
-import Header from "@/components/dashboard/header";
+import SideNav from "@/components/user-layout/sidenav";
+import Header from "@/components/user-layout/header";
 
-export default function DashboardLayout({
+export default function UserLayout({
   children,
 }: {
   children: React.ReactNode;
