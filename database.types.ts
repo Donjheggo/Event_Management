@@ -9,6 +9,66 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      event_attendees: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_attendees_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_attendees_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          schedule: string
+          status: Database["public"]["Enums"]["EVENT_STATUS"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          schedule: string
+          status?: Database["public"]["Enums"]["EVENT_STATUS"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          schedule?: string
+          status?: Database["public"]["Enums"]["EVENT_STATUS"]
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           created_at: string
@@ -55,6 +115,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      EVENT_STATUS: "ACTIVE" | "COMPLETED"
       USER_ROLE: "USER" | "ADMIN"
     }
     CompositeTypes: {
