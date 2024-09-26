@@ -59,6 +59,7 @@ export default async function FeedbacksTable({
               </TableHead>
               <TableHead className="table-cell">Name</TableHead>
               <TableHead className="table-cell">Event</TableHead>
+              <TableHead className="table-cell">Message</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
               </TableHead>
@@ -83,7 +84,7 @@ export default async function FeedbacksTable({
                 <TableCell className="font-semibold">
                   {item.event_id.name}
                 </TableCell>
-                <TableCell className="font-semibold"> </TableCell>
+                <TableCell className="font-normal">{item.message}</TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
