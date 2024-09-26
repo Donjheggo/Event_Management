@@ -92,6 +92,8 @@ export default function CreateDialog() {
 }
 
 export type EventT = {
+  id?: string;
   name: string;
   schedule: Date;
+  status?: string;
 };

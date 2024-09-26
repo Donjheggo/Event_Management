@@ -75,6 +75,7 @@ export type Database = {
           event_id: string
           id: string
           message: string
+          name: string
           user_id: string
         }
         Insert: {
@@ -82,6 +83,7 @@ export type Database = {
           event_id?: string
           id?: string
           message: string
+          name: string
           user_id?: string
         }
         Update: {
@@ -89,9 +91,17 @@ export type Database = {
           event_id?: string
           id?: string
           message?: string
+          name?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "feedbacks_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "feedbacks_user_id_fkey"
             columns: ["user_id"]
@@ -107,7 +117,7 @@ export type Database = {
           email: string
           id: string
           image: string | null
-          name: string | null
+          name: string
           role: Database["public"]["Enums"]["USER_ROLE"]
           updated_at: string | null
         }
@@ -116,7 +126,7 @@ export type Database = {
           email: string
           id?: string
           image?: string | null
-          name?: string | null
+          name: string
           role?: Database["public"]["Enums"]["USER_ROLE"]
           updated_at?: string | null
         }
@@ -125,7 +135,7 @@ export type Database = {
           email?: string
           id?: string
           image?: string | null
-          name?: string | null
+          name?: string
           role?: Database["public"]["Enums"]["USER_ROLE"]
           updated_at?: string | null
         }

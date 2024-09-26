@@ -26,6 +26,48 @@ export async function CreateEvent(form: FormData) {
   }
 }
 
+export async function JoinEvent(formData: FormData) {
+  try {
+    const supabase = createClient();
+    const user_id = formData.get("user_id");
+    const event_id = formData.get("event_id");
+
+    // Check if user already joined
+    const { data: userJoined, error: userExistError } = await supabase
+      .from("event_attendees")
+      .select("*")
+      .eq("user_id", user_id)
+      .eq("event_id", event_id)
+      .maybeSingle(); //  maybeSingle can handle non-existing rows
+
+    if (userExistError) {
+      return { error: "Error checking event status." };
+    }
+
+    if (userJoined) {
+      return { error: "You already joined the event." };
+    }
+
+    const { error: insertError } = await supabase
+      .from("event_attendees")
+      .insert([
+        {
+          user_id: user_id,
+          event_id: event_id,
+        },
+      ]);
+
+    if (insertError) {
+      return { error: insertError.message };
+    }
+
+    revalidatePath("/");
+    return { error: "" };
+  } catch (error) {
+    return { error: error };
+  }
+}
+
 export async function GetEvents(
   searchQuery: string,
   page: number,
@@ -36,7 +78,7 @@ export async function GetEvents(
     const query = supabase
       .from("events")
       .select("*")
-      .order("created_at", { ascending: false })
+      .order("schedule", { ascending: false })
       .range((page - 1) * items_per_page, page * items_per_page - 1);
 
     const { data, error } = searchQuery
@@ -81,7 +123,7 @@ export async function TotalActiveEvents() {
     const { data, error } = await supabase
       .from("events")
       .select("*")
-      .eq('status', 'ACTIVE')
+      .eq("status", "ACTIVE");
 
     if (error) {
       console.error(error);
@@ -101,7 +143,7 @@ export async function TotalCompletedEvents() {
     const { data, error } = await supabase
       .from("events")
       .select("*")
-      .eq('status', 'COMPLETED')
+      .eq("status", "COMPLETED");
 
     if (error) {
       console.error(error);
@@ -114,7 +156,6 @@ export async function TotalCompletedEvents() {
     return 0;
   }
 }
-
 
 export async function DeleteEvent(id: string) {
   try {
@@ -160,7 +201,7 @@ export async function UpdateEvent(formData: FormData) {
       .update({
         name: formData.get("name"),
         schedule: formData.get("schedule"),
-        status: formData.get("status")
+        status: formData.get("status"),
       })
       .eq("id", formData.get("id"))
       .select();
@@ -173,5 +214,27 @@ export async function UpdateEvent(formData: FormData) {
     return { error: "" };
   } catch (error) {
     return { error: error };
+  }
+}
+
+export async function CheckUserJoinStatus(event_id: string, user_id: string) {
+  try {
+    const supabase = createClient();
+
+    // Check if user already joined
+    const { data: userJoined, error: userExistError } = await supabase
+      .from("event_attendees")
+      .select("*")
+      .eq("user_id", user_id)
+      .eq("event_id", event_id)
+      .maybeSingle(); //  maybeSingle can handle non-existing rows
+
+    if (userExistError || !userJoined) {
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    return false;
   }
 }

@@ -133,9 +133,4 @@ export const userLinks = [
     href: "/",
     icon: <CalendarDays />,
   },
-  {
-    name: "Feedbacks",
-    href: "/feedbacks",
-    icon: <PencilLine />,
-  },
 ];

@@ -67,3 +67,47 @@ export async function DeleteFeedback(id: string) {
     return { error: error };
   }
 }
+
+export async function GetFeedbacksByEventId(event_id: string) {
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("feedbacks")
+      .select(`*, user_id (image, name)`)
+      .eq("event_id", event_id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      return [];
+    }
+
+    return data || [];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export async function CreateFeedback(formData: FormData) {
+  try {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("feedbacks")
+      .insert({
+        user_id: formData.get("user_id"),
+        name: formData.get("name"),
+        event_id: formData.get("event_id"),
+        message: formData.get("message"),
+      })
+      .select();
+
+    if (error) {
+      return { error: error };
+    }
+    revalidatePath("/");
+    return { error: "" };
+  } catch (error) {
+    return { error: error };
+  }
+}
