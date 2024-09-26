@@ -138,7 +138,7 @@ export const adminLinks = [
 export const userLinks = [
   {
     name: "Events",
-    href: "/events",
+    href: "/",
     icon: <CalendarDays />,
   },
   {
