@@ -22,8 +22,6 @@ import {
 } from "@/components/ui/table";
 import { GetFeedbacks, TotalFeedbacks } from "@/lib/actions/feedbacks";
 import { TablePagination } from "./pagination";
-import { FormatDateTime } from "@/lib/utils";
-import { Badge } from "../ui/badge";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
 import DeleteButton from "./delete-button";

@@ -5,7 +5,7 @@ export async function GetEventAttendees(event_id: string) {
   try {
     const { data, error } = await supabase
       .from("event_attendees")
-      .select("*")
+      .select(`*, user_id (image, name)`)
       .eq("event_id", event_id);
 
     if (error) {

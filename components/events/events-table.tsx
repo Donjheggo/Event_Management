@@ -29,6 +29,7 @@ import UpdateButton from "./update-button";
 import DeleteButton from "./delete-button";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
+import AttendeesList from "./event-attendees-list";
 
 export default async function EventsTable({
   searchQuery,
@@ -39,7 +40,7 @@ export default async function EventsTable({
 }) {
   const items_per_page = 7;
 
-  const [totalEvents, services] = await Promise.all([
+  const [totalEvents, events] = await Promise.all([
     TotalEvents(),
     GetEvents(searchQuery, page, items_per_page),
   ]);
@@ -55,8 +56,8 @@ export default async function EventsTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="table-cell">Name</TableHead>
-              <TableHead className="table-cell">Schedule</TableHead>
+              <TableHead className="table-cell">Name & Schedule</TableHead>
+              <TableHead className="table-cell">Attendees</TableHead>
               <TableHead className="table-cell">Status</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
@@ -64,11 +65,14 @@ export default async function EventsTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {services?.map((item, index) => (
+            {events?.map((item, index) => (
               <TableRow key={index}>
-                <TableCell className="font-semibold">{item.name}</TableCell>
-                <TableCell className="font-normal">
+                <TableCell>
+                  <p className="font-semibold text-lg">{item.name}</p>
                   <p>{FormatDateTime(new Date(item.schedule))}</p>
+                </TableCell>
+                <TableCell className="font-normal">
+                  <AttendeesList event_id={item.id}/>
                 </TableCell>
                 <TableCell className="font-normal">
                   <Badge>{item.status} </Badge>
