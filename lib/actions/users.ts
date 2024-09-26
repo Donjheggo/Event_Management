@@ -1,6 +1,6 @@
 "use server";
 
-// import { revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { createClient } from "../supabase/server";
 
 
@@ -33,82 +33,80 @@ export async function GetUsers(
   }
 }
 
-// export async function TotalEvents() {
-//   try {
-//     const supabase = createClient();
-//     const { data, error } = await supabase
-//       .from("events")
-//       .select("*")
-//       .order("created_at", { ascending: false });
+export async function TotalUsers() {
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-//     if (error) {
-//       console.error(error);
-//       return 0;
-//     }
+    if (error) {
+      console.error(error);
+      return 0;
+    }
 
-//     return data.length || 0;
-//   } catch (error) {
-//     console.error(error);
-//     return 0;
-//   }
-// }
+    return data.length || 0;
+  } catch (error) {
+    console.error(error);
+    return 0;
+  }
+}
 
-// export async function DeleteEvent(id: string) {
-//   try {
-//     const supabase = createClient();
-//     const { error } = await supabase.from("events").delete().eq("id", id);
+export async function DeleteUser(id: string) {
+  try {
+    const supabase = createClient();
+    const { error } = await supabase.from("users").delete().eq("id", id);
 
-//     if (error) {
-//       return { error: error };
-//     }
-//     revalidatePath("/events");
-//     revalidatePath("/dashboard/events");
-//     return { error: "" };
-//   } catch (error) {
-//     return { error: error };
-//   }
-// }
+    if (error) {
+      return { error: error };
+    }
+    revalidatePath("/users");
+    revalidatePath("/dashboard/users");
+    return { error: "" };
+  } catch (error) {
+    return { error: error };
+  }
+}
 
-// export async function GetEventById(id: string) {
-//   try {
-//     const supabase = createClient();
-//     const { error, data } = await supabase
-//       .from("events")
-//       .select("*")
-//       .eq("id", id)
-//       .single();
+export async function GetUserById(id: string) {
+  try {
+    const supabase = createClient();
+    const { error, data } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", id)
+      .single();
 
-//     if (error) {
-//       return false;
-//     }
-//     revalidatePath("/events");
-//     revalidatePath("/dashboard/events");
-//     return data;
-//   } catch (error) {
-//     return false;
-//   }
-// }
+    if (error) {
+      return false;
+    }
+    revalidatePath("/users");
+    revalidatePath("/dashboard/users");
+    return data;
+  } catch (error) {
+    return false;
+  }
+}
 
-// export async function UpdateEvent(formData: FormData) {
-//   try {
-//     const supabase = createClient();
-//     const { error } = await supabase
-//       .from("events")
-//       .update({
-//         name: formData.get("name"),
-//         schedule: formData.get("schedule"),
-//         status: formData.get("status")
-//       })
-//       .eq("id", formData.get("id"))
-//       .select();
+export async function UpdateUser(formData: FormData) {
+  try {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("users")
+      .update({
+        role: formData.get("role")
+      })
+      .eq("id", formData.get("id"))
+      .select();
 
-//     if (error) {
-//       return { error: error };
-//     }
-//     revalidatePath("/events");
-//     revalidatePath("/dashboard/events");
-//     return { error: "" };
-//   } catch (error) {
-//     return { error: error };
-//   }
-// }
+    if (error) {
+      return { error: error };
+    }
+    revalidatePath("/users");
+    revalidatePath("/dashboard/users");
+    return { error: "" };
+  } catch (error) {
+    return { error: error };
+  }
+}

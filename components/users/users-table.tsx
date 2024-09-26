@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { GetEvents, TotalEvents } from "@/lib/actions/events";
+import { GetUsers, TotalUsers } from "@/lib/actions/users";
 import { TablePagination } from "./pagination";
 import { FormatDateTime } from "@/lib/utils";
 import { Badge } from "../ui/badge";
@@ -29,8 +29,9 @@ import UpdateButton from "./update-button";
 import DeleteButton from "./delete-button";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
-export default async function EventsTable({
+export default async function UsersTable({
   searchQuery,
   page,
 }: {
@@ -39,39 +40,49 @@ export default async function EventsTable({
 }) {
   const items_per_page = 7;
 
-  const [totalEvents, services] = await Promise.all([
-    TotalEvents(),
-    GetEvents(searchQuery, page, items_per_page),
+  const [totalUsers, users] = await Promise.all([
+    TotalUsers(),
+    GetUsers(searchQuery, page, items_per_page),
   ]);
 
-  const totalPages = Math.ceil(totalEvents / items_per_page);
+  const totalPages = Math.ceil(totalUsers / items_per_page);
   return (
     <Card className="w-full shadow-none bg-background">
       <CardHeader>
-        <CardTitle>Services</CardTitle>
-        <CardDescription>List and prices of our services.</CardDescription>
+        <CardTitle>Users</CardTitle>
+        <CardDescription>Manage users role.</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="hidden w-[100px] sm:table-cell">
+                <span className="sr-only">Image</span>
+              </TableHead>
               <TableHead className="table-cell">Name</TableHead>
-              <TableHead className="table-cell">Schedule</TableHead>
-              <TableHead className="table-cell">Status</TableHead>
+              <TableHead className="table-cell">Email</TableHead>
+              <TableHead className="table-cell">Role</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {services?.map((item, index) => (
+            {users?.map((item, index) => (
               <TableRow key={index}>
-                <TableCell className="font-semibold">{item.name}</TableCell>
-                <TableCell className="font-normal">
-                  <p>{FormatDateTime(new Date(item.schedule))}</p>
+                <TableCell className="hidden sm:table-cell">
+                  <Image
+                    alt="Product image"
+                    className="aspect-square rounded-full object-cover"
+                    height="64"
+                    src={item.image}
+                    width="64"
+                  />
                 </TableCell>
+                <TableCell className="font-semibold">{item.name}</TableCell>
+                <TableCell className="font-normal">{item.email}</TableCell>
                 <TableCell className="font-normal">
-                  <Badge>{item.status} </Badge>
+                  <Badge>{item.role} </Badge>
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
@@ -100,8 +111,8 @@ export default async function EventsTable({
       <CardFooter>
         <div className="text-xs text-muted-foreground">
           Showing <strong>{(page - 1) * items_per_page + 1}</strong>-
-          <strong>{Math.min(page * items_per_page, totalEvents)}</strong> of{" "}
-          <strong>{totalEvents}</strong> events
+          <strong>{Math.min(page * items_per_page, totalUsers)}</strong> of{" "}
+          <strong>{totalUsers}</strong> users
         </div>
         <div className="ml-auto">
           <TablePagination totalPages={totalPages} />

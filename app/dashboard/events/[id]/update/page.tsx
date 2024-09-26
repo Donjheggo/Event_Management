@@ -1,4 +1,3 @@
-// import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import UpdateEventForm from "@/components/events/update-form";

@@ -1,5 +1,5 @@
 import EventsTable from "@/components/events/events-table";
-import SearchBar from "@/components/events/search-bar";
+import SearchBar from "@/components/search-bar";
 import CreateDialog from "@/components/events/create-dialog";
 
 export default function Events({

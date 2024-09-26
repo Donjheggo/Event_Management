@@ -29,7 +29,7 @@ export default function SearchBar() {
         defaultValue={searchParams.get("query")?.toString()}
         type="search"
         placeholder="Search..."
-        className="w-full rounded-lg bg-background pl-8 md:w-[400px]"
+        className="w-full rounded-lg bg-background pl-8 md:w-[300px]"
       />
     </div>
   );
