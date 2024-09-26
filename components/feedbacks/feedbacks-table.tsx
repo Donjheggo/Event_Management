@@ -10,7 +10,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -21,16 +20,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { GetUsers, TotalUsers } from "@/lib/actions/users";
+import { GetFeedbacks, TotalFeedbacks } from "@/lib/actions/feedbacks";
 import { TablePagination } from "./pagination";
+import { FormatDateTime } from "@/lib/utils";
 import { Badge } from "../ui/badge";
-import UpdateButton from "./update-button";
-import DeleteButton from "./delete-button";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
+import DeleteButton from "./delete-button";
 import Image from "next/image";
 
-export default async function UsersTable({
+export default async function FeedbacksTable({
   searchQuery,
   page,
 }: {
@@ -39,17 +38,17 @@ export default async function UsersTable({
 }) {
   const items_per_page = 7;
 
-  const [totalUsers, users] = await Promise.all([
-    TotalUsers(),
-    GetUsers(searchQuery, page, items_per_page),
+  const [totalFeedbacks, feedbacks] = await Promise.all([
+    TotalFeedbacks(),
+    GetFeedbacks(searchQuery, page, items_per_page),
   ]);
 
-  const totalPages = Math.ceil(totalUsers / items_per_page);
+  const totalPages = Math.ceil(totalFeedbacks / items_per_page);
   return (
     <Card className="w-full shadow-none bg-background">
       <CardHeader>
-        <CardTitle>Users</CardTitle>
-        <CardDescription>Manage users role.</CardDescription>
+        <CardTitle>Feedbacks</CardTitle>
+        <CardDescription>Manage users feedbacks.</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
@@ -59,30 +58,32 @@ export default async function UsersTable({
                 <span className="sr-only">Image</span>
               </TableHead>
               <TableHead className="table-cell">Name</TableHead>
-              <TableHead className="table-cell">Email</TableHead>
-              <TableHead className="table-cell">Role</TableHead>
+              <TableHead className="table-cell">Event</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users?.map((item, index) => (
+            {feedbacks?.map((item, index) => (
               <TableRow key={index}>
-                <TableCell className="hidden sm:table-cell">
+                <TableCell className="font-semibold">
                   <Image
                     alt="Product image"
                     className="aspect-square rounded-full object-cover"
                     height="64"
-                    src={item.image}
+                    src={item.user_id.image}
                     width="64"
                   />
                 </TableCell>
-                <TableCell className="font-semibold">{item.name}</TableCell>
-                <TableCell className="font-normal">{item.email}</TableCell>
-                <TableCell className="font-normal">
-                  <Badge>{item.role} </Badge>
+                <TableCell className="font-semibold">
+                  {item.user_id.name} <br />
+                  <span className="font-normal">{item.user_id.email}</span>
                 </TableCell>
+                <TableCell className="font-semibold">
+                  {item.event_id.name}
+                </TableCell>
+                <TableCell className="font-semibold"> </TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -92,10 +93,6 @@ export default async function UsersTable({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>
-                        <UpdateButton id={item.id} />
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
                       <DropdownMenuItem>
                         <DeleteButton id={item.id} />
                       </DropdownMenuItem>
@@ -110,8 +107,8 @@ export default async function UsersTable({
       <CardFooter>
         <div className="text-xs text-muted-foreground">
           Showing <strong>{(page - 1) * items_per_page + 1}</strong>-
-          <strong>{Math.min(page * items_per_page, totalUsers)}</strong> of{" "}
-          <strong>{totalUsers}</strong> users
+          <strong>{Math.min(page * items_per_page, totalFeedbacks)}</strong> of{" "}
+          <strong>{totalFeedbacks}</strong> events
         </div>
         <div className="ml-auto">
           <TablePagination totalPages={totalPages} />
