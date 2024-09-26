@@ -61,7 +61,7 @@ export default function JoinEventForm({ event_id }: { event_id: string }) {
   console.log(joinStatus);
 
   return (
-    <div className={joinStatus ? "hidden" : ""}>
+    <div className={`${joinStatus ? "hidden" : ""} mt-4`}>
       <form onSubmit={handleSubmit} className="flex space-x-2">
         <input name="user_id" defaultValue={user?.id} hidden />
         <input name="event_id" defaultValue={event_id} hidden />

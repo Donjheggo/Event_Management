@@ -49,9 +49,7 @@ export default async function EventCard({ item }: { item: EventT }) {
       <div className="mt-4">
         <CreateFeedbackForm event_id={item?.id || ""} />
       </div>
-      <div className="mt-4 w-full">
-        <JoinEventForm event_id={item?.id || ""}/>
-      </div>
+      <JoinEventForm event_id={item?.id || ""} />
     </div>
   );
 }
