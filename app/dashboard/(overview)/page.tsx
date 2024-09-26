@@ -1,15 +1,5 @@
-import {
-  Users,
-  CalendarDays,
-  CalendarCheck,
-  PencilLine,
-} from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Users, CalendarDays, CalendarCheck, PencilLine } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { TotalUsers } from "@/lib/actions/users";
 import { TotalActiveEvents, TotalCompletedEvents } from "@/lib/actions/events";
@@ -85,7 +75,7 @@ export default async function Dashboard() {
           </CardContent>
         </Card>
       </div>
-      <div className="flex flex-col md:flex-row md:flex-1 gap-8">
+      <div className="flex flex-1 flex-col lg:flex-row gap-8">
         <div className="w-full">
           <EventsTable searchQuery="" page={1} />
         </div>
