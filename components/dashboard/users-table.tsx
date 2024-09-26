@@ -39,7 +39,7 @@ export default async function UsersTable({
         <div className="flex items-center justify-between">
           <CardTitle>Users</CardTitle>
           <Link href="/dashboard/users">
-            <Button className="flex items-center">
+            <Button variant="outline" className="flex items-center">
               View More
               <MoveUpRight size={18} className="ml-1"/>
             </Button>

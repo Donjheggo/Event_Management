@@ -39,7 +39,7 @@ export default async function EventsTable({
         <div className="flex items-center justify-between">
           <CardTitle>Events</CardTitle>
           <Link href="/dashboard/events">
-            <Button className="flex items-center">
+            <Button variant="outline" className="flex items-center">
               View More
               <MoveUpRight size={18} className="ml-1" />
             </Button>
