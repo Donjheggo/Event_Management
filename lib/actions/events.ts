@@ -75,6 +75,47 @@ export async function TotalEvents() {
   }
 }
 
+export async function TotalActiveEvents() {
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .eq('status', 'ACTIVE')
+
+    if (error) {
+      console.error(error);
+      return 0;
+    }
+
+    return data.length || 0;
+  } catch (error) {
+    console.error(error);
+    return 0;
+  }
+}
+
+export async function TotalCompletedEvents() {
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("events")
+      .select("*")
+      .eq('status', 'COMPLETED')
+
+    if (error) {
+      console.error(error);
+      return 0;
+    }
+
+    return data.length || 0;
+  } catch (error) {
+    console.error(error);
+    return 0;
+  }
+}
+
+
 export async function DeleteEvent(id: string) {
   try {
     const supabase = createClient();

@@ -48,8 +48,8 @@ export default async function EventsTable({
   return (
     <Card className="w-full shadow-none bg-background">
       <CardHeader>
-        <CardTitle>Services</CardTitle>
-        <CardDescription>List and prices of our services.</CardDescription>
+        <CardTitle>Events</CardTitle>
+        <CardDescription>Manage events.</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
