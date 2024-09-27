@@ -78,7 +78,7 @@ export async function GetEvents(
     const query = supabase
       .from("events")
       .select("*")
-      .order("schedule", { ascending: false })
+      .order("schedule", { ascending: true })
       .range((page - 1) * items_per_page, page * items_per_page - 1);
 
     const { data, error } = searchQuery

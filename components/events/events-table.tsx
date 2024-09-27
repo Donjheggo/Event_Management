@@ -30,6 +30,7 @@ import DeleteButton from "./delete-button";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
 import AttendeesList from "./event-attendees-list";
+import NotifyButton from "./nofity-button";
 
 export default async function EventsTable({
   searchQuery,
@@ -59,6 +60,7 @@ export default async function EventsTable({
               <TableHead className="table-cell">Name & Schedule</TableHead>
               <TableHead className="table-cell">Attendees</TableHead>
               <TableHead className="table-cell">Status</TableHead>
+              <TableHead className="table-cell">Notify</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
               </TableHead>
@@ -72,10 +74,13 @@ export default async function EventsTable({
                   <p>{FormatDateTime(new Date(item.schedule))}</p>
                 </TableCell>
                 <TableCell className="font-normal">
-                  <AttendeesList event_id={item.id}/>
+                  <AttendeesList event_id={item.id} />
                 </TableCell>
                 <TableCell className="font-normal">
-                  <Badge>{item.status} </Badge>
+                  <Badge variant="outline">{item.status}</Badge>
+                </TableCell>
+                <TableCell className="font-normal">
+                  <NotifyButton event_name={item.name} />
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
