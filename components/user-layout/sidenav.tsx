@@ -1,6 +1,5 @@
 "use client";
 
-import { Package2 } from "lucide-react";
 import {
   LogOut,
   LayoutDashboard,
