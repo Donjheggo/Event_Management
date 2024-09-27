@@ -14,6 +14,8 @@ import placeholder from "@/app/user.png";
 import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@/context/user-context";
+import favicon from "@/app/favicon.ico"
+
 
 export default function Sidenav() {
   const { loading, user } = useUser();
@@ -27,8 +29,8 @@ export default function Sidenav() {
             href="/dashboard"
             className="flex items-center gap-2 font-semibold"
           >
-            <Package2 className="h-6 w-6" />
-            <span>SNSU Event Management</span>
+            <Image src={favicon} alt="logo" width={30} height={30}/>
+            <span className="text-base">SNSU Event Management</span>
           </Link>
         </div>
         <div className="flex-1">
@@ -44,7 +46,7 @@ export default function Sidenav() {
                 width={35}
                 className="rounded-full"
               />
-              <h1 className="text-md">{user?.name}</h1>
+              <h1 className="text-sm">{user?.name}</h1>
             </Link>
             <div className="mt-2">
               <p className="text-sm font-medium text-muted-foreground pb-2 max-w-[248px] truncate">
