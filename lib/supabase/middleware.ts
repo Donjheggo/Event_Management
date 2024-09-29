@@ -54,8 +54,12 @@ export async function updateSession(request: NextRequest) {
       .eq("id", user.id)
       .single();
 
-    if (error) {
+    if (error || !userData) {
       console.error("Error fetching user role:", error);
+      // If no user data is found or an error occurs, force sign-out
+      const url = request.nextUrl.clone();
+      url.pathname = "/auth/sign-in";
+      return NextResponse.redirect(url);
     }
 
     const isAdmin = userData.role === "ADMIN";
