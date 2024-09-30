@@ -58,8 +58,6 @@ export default function JoinEventForm({ event_id }: { event_id: string }) {
     };
   }, [user?.id, event_id]);
 
-  console.log("Join status", joinStatus);
-
   return (
     <div className={`${joinStatus ? "hidden" : ""} mt-4`}>
       <form onSubmit={handleSubmit} className="flex space-x-2">
