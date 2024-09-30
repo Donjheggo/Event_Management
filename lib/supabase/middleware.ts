@@ -46,34 +46,42 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // If user is logged in but accessing the login page, redirect to home or dashboard
+  if (user && isLoginPage) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/"; // Redirect to homepage or a protected route
+    return NextResponse.redirect(url);
+  }
+
   // Routes Authorization Filter by User Role
-  // if (user) {
-  //   const { data: userData, error } = await supabase
-  //     .from("users")
-  //     .select("*")
-  //     .eq("id", user.id)
-  //     .single();
+  if (user) {
+    const { data: userData, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .single();
 
-  //   if (error || !userData) {
-  //     console.error("Error fetching user role:", error);
-  //     // If no user data is found or an error occurs, force sign-out
-  //     const url = request.nextUrl.clone();
-  //     url.pathname = "/auth/sign-in";
-  //     return NextResponse.redirect(url);
-  //   }
+    if (error || !userData) {
+      console.error("Error fetching user role:", error);
+      // Redirect to login page if there is an issue with fetching user data
+      const url = request.nextUrl.clone();
+      url.pathname = "/auth/sign-in";
+      return NextResponse.redirect(url);
+    }
 
-  //   const isAdmin = userData.role === "ADMIN";
-  //   const adminRoutes = ["/dashboard"];
+    const isAdmin = userData.role === "ADMIN";
+    const adminRoutes = ["/dashboard"];
 
-  //   if (
-  //     !isAdmin &&
-  //     adminRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
-  //   ) {
-  //     const url = request.nextUrl.clone();
-  //     url.pathname = "/";
-  //     return NextResponse.redirect(url);
-  //   }
-  // }
+    // If user is not an admin but tries to access an admin route, redirect to homepage
+    if (
+      !isAdmin &&
+      adminRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
+    ) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+  }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
