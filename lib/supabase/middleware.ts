@@ -47,33 +47,33 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Routes Authorization Filter by User Role
-  if (user) {
-    const { data: userData, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", user.id)
-      .single();
+  // if (user) {
+  //   const { data: userData, error } = await supabase
+  //     .from("users")
+  //     .select("*")
+  //     .eq("id", user.id)
+  //     .single();
 
-    if (error || !userData) {
-      console.error("Error fetching user role:", error);
-      // If no user data is found or an error occurs, force sign-out
-      const url = request.nextUrl.clone();
-      url.pathname = "/auth/sign-in";
-      return NextResponse.redirect(url);
-    }
+  //   if (error || !userData) {
+  //     console.error("Error fetching user role:", error);
+  //     // If no user data is found or an error occurs, force sign-out
+  //     const url = request.nextUrl.clone();
+  //     url.pathname = "/auth/sign-in";
+  //     return NextResponse.redirect(url);
+  //   }
 
-    const isAdmin = userData.role === "ADMIN";
-    const adminRoutes = ["/dashboard"];
+  //   const isAdmin = userData.role === "ADMIN";
+  //   const adminRoutes = ["/dashboard"];
 
-    if (
-      !isAdmin &&
-      adminRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
-    ) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
-    }
-  }
+  //   if (
+  //     !isAdmin &&
+  //     adminRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
+  //   ) {
+  //     const url = request.nextUrl.clone();
+  //     url.pathname = "/";
+  //     return NextResponse.redirect(url);
+  //   }
+  // }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
