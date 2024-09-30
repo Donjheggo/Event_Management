@@ -70,7 +70,7 @@ export async function updateSession(request: NextRequest) {
       adminRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
     ) {
       const url = request.nextUrl.clone();
-      url.pathname = "/events";
+      url.pathname = "/";
       return NextResponse.redirect(url);
     }
   }
