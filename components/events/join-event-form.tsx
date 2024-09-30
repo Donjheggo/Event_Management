@@ -13,7 +13,7 @@ export default function JoinEventForm({ event_id }: { event_id: string }) {
   const { user } = useUser();
   const supabase = createClient();
   const [loading, setLoading] = useState<boolean>(false);
-  const [joinStatus, setJoinStatus] = useState<boolean>(true);
+  const [joinStatus, setJoinStatus] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,6 +26,7 @@ export default function JoinEventForm({ event_id }: { event_id: string }) {
         toast.error(`${error}`);
         return;
       }
+      setJoinStatus(true)
     } catch (error) {
       toast.error("There was unexpected error sending feedback.");
     } finally {
@@ -36,8 +37,7 @@ export default function JoinEventForm({ event_id }: { event_id: string }) {
   const fetchUserStatus = async () => {
     if (user?.id) {
       const response = await CheckUserJoinStatus(event_id, user.id);
-      console.log("Response: ", response);
-      setJoinStatus(response);
+      if (response) setJoinStatus(response);
     }
   };
 
@@ -56,9 +56,9 @@ export default function JoinEventForm({ event_id }: { event_id: string }) {
     return () => {
       subscription.unsubscribe();
     };
-  }, [user?.id]);
+  }, [user?.id, event_id]);
 
-  console.log(joinStatus);
+  console.log("Join status", joinStatus);
 
   return (
     <div className={`${joinStatus ? "hidden" : ""} mt-4`}>
